@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fr-alx-app", "fr-alx-app\fr-alx-app.csproj", "{2408C97F-8A28-438D-AF18-8BC75B5B98E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FRAlexaApp", "fr-alx-app\FRAlexaApp.csproj", "{2408C97F-8A28-438D-AF18-8BC75B5B98E2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9F8FA021-9787-44E6-967D-F7C109040806}"
 	ProjectSection(SolutionItems) = preProject
