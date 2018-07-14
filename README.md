@@ -1,2 +1,2 @@
-# fr-alx-app
+# FRAlexaApp
 FR Alexa App
