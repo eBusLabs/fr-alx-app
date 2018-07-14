@@ -1,6 +1,6 @@
 using System;
 
-namespace fr_alx_app.Models
+namespace FRAlexaApp.Models
 {
     public class ErrorViewModel
     {
