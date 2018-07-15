@@ -10,4 +10,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="..\..\..\..\Lochan%2527s Documents\projects\fr-alx-app\fr-alx-app\Services\Clients\" />
+  </ItemGroup>
+
 </Project>
