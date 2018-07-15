@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using FRAlexaApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,29 +14,31 @@ namespace FRAlexaApp.Controllers
     [ApiController]
     public class OpenidController : ControllerBase
     {
-        // GET: api/Openid
+
         [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        [Route(".well-known/openid-configuration")]
+        public async Task<HttpResponseMessage> GetOpenIdConfig() => await new OpenidService().GetOpenIdConfig();
 
-        // POST: api/Openid
+        [HttpGet]
+        [Route(".well-known/openid-configuration/jwks")]
+        public async Task<HttpResponseMessage> GetOpenIdConfigJwks() => await new OpenidService().GetOpenIdConfigJwks();
+
+        // Here we should just redirect
         [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+        [Consumes("application/x-www-form-urlencoded")]
+        [Route("authorize")]
+        public async Task<HttpResponseMessage> Authorize([FromHeader] HttpHeaders headers, [FromBody] Dictionary<string, string> body) => await new OpenidService().Authorize();
 
-        // PUT: api/Openid/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        // token end-point should support both client-credentials for account-request and auth code for PSU signin
+        [HttpPost]
+        [Consumes("application/x-www-form-urlencoded")]
+        [Route("token")]
+        public async Task<HttpResponseMessage> Token([FromHeader] HttpHeaders headers, [FromBody] Dictionary<string, string> body) => await new OpenidService().CreateAuthToken();
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        [HttpGet]
+        [Consumes("application/x-www-form-urlencoded")]
+        [Route("userinfo")]
+        public async Task<HttpResponseMessage> UserInfo([FromHeader] HttpHeaders headers, [FromBody] Dictionary<string, string> body) => await new OpenidService().GetUserInfo();
+
     }
 }
