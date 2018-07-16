@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FRAlexaApp.Services.Clients;
+using FRAlexaApp.Services.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 
-namespace fr_alx_app
+namespace FRAlexaApp
 {
     public class Startup
     {
@@ -32,7 +33,20 @@ namespace fr_alx_app
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
+
+            // Add named FR client
+            services.AddHttpClient("FRClient", client => client.BaseAddress = new Uri(Configuration["FRBaseUri"]))
+                .ConfigurePrimaryHttpMessageHandler(handler => CertificateHelper.OBClientHandler());
+
+            // Add named DB client
+            services.AddHttpClient("DBClient", client => client.BaseAddress = new Uri(Configuration["DBBaseUri"]))
+                .ConfigurePrimaryHttpMessageHandler(handler => CertificateHelper.OBClientHandler());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +65,12 @@ namespace fr_alx_app
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseMvc(routes =>
             {
